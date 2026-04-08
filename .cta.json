@@ -1,0 +1,36 @@
+{
+  "projectName": "forge-fitness-v2",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "npm",
+  "includeExamples": true,
+  "tailwind": true,
+  "addOnOptions": {
+    "prisma": {
+      "database": "postgres"
+    }
+  },
+  "envVarValues": {
+    "VITE_CLERK_PUBLISHABLE_KEY": "pk_test_dG9waWNhbC1wYXJha2VldC01Mi5jbGVyay5hY2NvdW50cy5kZXYk"
+  },
+  "git": true,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "biome",
+    "neon",
+    "clerk",
+    "sentry",
+    "prisma",
+    "compiler",
+    "db",
+    "form",
+    "mcp",
+    "shadcn",
+    "table",
+    "store",
+    "storybook",
+    "tanstack-query"
+  ]
+}
