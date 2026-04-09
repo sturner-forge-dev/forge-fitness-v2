@@ -9,7 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as McpRouteImport } from './routes/mcp'
+import { Route as ExercisesRouteImport } from './routes/exercises'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
@@ -27,9 +29,19 @@ import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
 import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 import { Route as DemoApiMcpTodosRouteImport } from './routes/demo/api.mcp-todos'
 
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const McpRoute = McpRouteImport.update({
   id: '/mcp',
   path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExercisesRoute = ExercisesRouteImport.update({
+  id: '/exercises',
+  path: '/exercises',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -116,7 +128,9 @@ const DemoApiMcpTodosRoute = DemoApiMcpTodosRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/exercises': typeof ExercisesRoute
   '/mcp': typeof McpRoute
+  '/profile': typeof ProfileRoute
   '/demo/clerk': typeof DemoClerkRoute
   '/demo/db-chat': typeof DemoDbChatRoute
   '/demo/db-chat-api': typeof DemoDbChatApiRoute
@@ -135,7 +149,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/exercises': typeof ExercisesRoute
   '/mcp': typeof McpRoute
+  '/profile': typeof ProfileRoute
   '/demo/clerk': typeof DemoClerkRoute
   '/demo/db-chat': typeof DemoDbChatRoute
   '/demo/db-chat-api': typeof DemoDbChatApiRoute
@@ -155,7 +171,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/exercises': typeof ExercisesRoute
   '/mcp': typeof McpRoute
+  '/profile': typeof ProfileRoute
   '/demo/clerk': typeof DemoClerkRoute
   '/demo/db-chat': typeof DemoDbChatRoute
   '/demo/db-chat-api': typeof DemoDbChatApiRoute
@@ -176,7 +194,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/exercises'
     | '/mcp'
+    | '/profile'
     | '/demo/clerk'
     | '/demo/db-chat'
     | '/demo/db-chat-api'
@@ -195,7 +215,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/exercises'
     | '/mcp'
+    | '/profile'
     | '/demo/clerk'
     | '/demo/db-chat'
     | '/demo/db-chat-api'
@@ -214,7 +236,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/exercises'
     | '/mcp'
+    | '/profile'
     | '/demo/clerk'
     | '/demo/db-chat'
     | '/demo/db-chat-api'
@@ -234,7 +258,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ExercisesRoute: typeof ExercisesRoute
   McpRoute: typeof McpRoute
+  ProfileRoute: typeof ProfileRoute
   DemoClerkRoute: typeof DemoClerkRoute
   DemoDbChatRoute: typeof DemoDbChatRoute
   DemoDbChatApiRoute: typeof DemoDbChatApiRoute
@@ -253,11 +279,25 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mcp': {
       id: '/mcp'
       path: '/mcp'
       fullPath: '/mcp'
       preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercises': {
+      id: '/exercises'
+      path: '/exercises'
+      fullPath: '/exercises'
+      preLoaderRoute: typeof ExercisesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -378,7 +418,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ExercisesRoute: ExercisesRoute,
   McpRoute: McpRoute,
+  ProfileRoute: ProfileRoute,
   DemoClerkRoute: DemoClerkRoute,
   DemoDbChatRoute: DemoDbChatRoute,
   DemoDbChatApiRoute: DemoDbChatApiRoute,
