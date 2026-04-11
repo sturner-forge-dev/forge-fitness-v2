@@ -13,7 +13,6 @@ import {
 	TableRow,
 } from "#/components/ui/table";
 import { prisma } from "#/db";
-import type { Exercise } from "#/generated/prisma";
 
 const PAGE_SIZE = 20;
 
@@ -25,6 +24,8 @@ export const Route = createFileRoute("/exercises")({
 	loader: () => getExercises(),
 	component: ExercisesPage,
 });
+
+type Exercise = Awaited<ReturnType<typeof getExercises>>[number];
 
 function LevelChip({ level }: { level: string }) {
 	return (
@@ -56,9 +57,15 @@ function DetailRow({ label, value }: { label: string; value: string }) {
 function ExercisePanel({
 	exercise,
 	onClose,
-}: { exercise: Exercise; onClose: () => void }) {
+}: {
+	exercise: Exercise;
+	onClose: () => void;
+}) {
 	return (
-		<aside className="island-shell rise-in flex w-80 shrink-0 flex-col overflow-y-auto rounded-2xl p-5">
+		<aside
+			className="island-shell fixed top-0 right-0 z-50 flex h-full w-160 flex-col overflow-y-auto rounded-none border-l border-(--line) p-5 shadow-xl"
+			style={{ animation: "slideInRight 200ms ease-out" }}
+		>
 			<div className="mb-4 flex items-start justify-between gap-2">
 				<h2 className="display-title text-xl font-bold leading-snug text-(--sea-ink)">
 					{exercise.name}
@@ -80,9 +87,7 @@ function ExercisePanel({
 				{exercise.equipment && (
 					<DetailRow label="Equipment" value={exercise.equipment} />
 				)}
-				{exercise.force && (
-					<DetailRow label="Force" value={exercise.force} />
-				)}
+				{exercise.force && <DetailRow label="Force" value={exercise.force} />}
 				{exercise.mechanic && (
 					<DetailRow label="Mechanic" value={exercise.mechanic} />
 				)}
@@ -188,129 +193,121 @@ function ExercisesPage() {
 				</div>
 			</div>
 
-			<div className="flex items-start gap-5">
-				<div className="min-w-0 flex-1">
-					<section
-						className="island-shell rise-in overflow-hidden rounded-2xl"
-						style={{ animationDelay: "80ms" }}
-					>
-						<Table className="table-fixed">
-							<colgroup>
-								<col className="w-[30%]" />
-								<col className="w-[13%]" />
-								<col className="w-[14%]" />
-								<col className="w-[16%]" />
-								<col className="w-[20%]" />
-								<col className="w-[7%]" />
-							</colgroup>
-							<TableHeader>
-								<TableRow className="border-b border-(--line)">
-									<TableHead className="font-semibold text-(--sea-ink)">
-										Name
-									</TableHead>
-									<TableHead className="font-semibold text-(--sea-ink)">
-										Category
-									</TableHead>
-									<TableHead className="font-semibold text-(--sea-ink)">
-										Level
-									</TableHead>
-									<TableHead className="font-semibold text-(--sea-ink)">
-										Equipment
-									</TableHead>
-									<TableHead className="font-semibold text-(--sea-ink)">
-										Primary Muscles
-									</TableHead>
-									<TableHead />
+			<section
+				className="island-shell rise-in overflow-hidden rounded-2xl"
+				style={{ animationDelay: "80ms" }}
+			>
+				<Table className="table-fixed">
+					<colgroup>
+						<col className="w-[30%]" />
+						<col className="w-[13%]" />
+						<col className="w-[14%]" />
+						<col className="w-[16%]" />
+						<col className="w-[20%]" />
+						<col className="w-[7%]" />
+					</colgroup>
+					<TableHeader>
+						<TableRow className="border-b border-(--line)">
+							<TableHead className="font-semibold text-(--sea-ink)">
+								Name
+							</TableHead>
+							<TableHead className="font-semibold text-(--sea-ink)">
+								Category
+							</TableHead>
+							<TableHead className="font-semibold text-(--sea-ink)">
+								Level
+							</TableHead>
+							<TableHead className="font-semibold text-(--sea-ink)">
+								Equipment
+							</TableHead>
+							<TableHead className="font-semibold text-(--sea-ink)">
+								Primary Muscles
+							</TableHead>
+							<TableHead />
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{exercises.length > 0 ? (
+							exercises.map((ex) => (
+								<TableRow
+									key={ex.id}
+									className="border-b border-(--line) hover:bg-[rgba(79,184,178,0.06)]"
+								>
+									<TableCell className="truncate font-medium text-(--sea-ink)">
+										{ex.name}
+									</TableCell>
+									<TableCell className="truncate capitalize text-(--sea-ink-soft)">
+										{ex.category}
+									</TableCell>
+									<TableCell>
+										<LevelChip level={ex.level} />
+									</TableCell>
+									<TableCell className="truncate capitalize text-(--sea-ink-soft)">
+										{ex.equipment ?? "—"}
+									</TableCell>
+									<TableCell className="truncate text-(--sea-ink-soft)">
+										{ex.primaryMuscles.join(", ")}
+									</TableCell>
+									<TableCell>
+										<Button
+											size="xs"
+											variant="ghost"
+											onClick={() =>
+												setSelected((prev) => (prev?.id === ex.id ? null : ex))
+											}
+											className={
+												selected?.id === ex.id ? "text-(--lagoon-deep)" : ""
+											}
+										>
+											{selected?.id === ex.id ? "Close" : "View"}
+										</Button>
+									</TableCell>
 								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{exercises.length > 0 ? (
-									exercises.map((ex) => (
-										<TableRow
-											key={ex.id}
-											className="border-b border-(--line) hover:bg-[rgba(79,184,178,0.06)]"
-										>
-											<TableCell className="truncate font-medium text-(--sea-ink)">
-												{ex.name}
-											</TableCell>
-											<TableCell className="truncate capitalize text-(--sea-ink-soft)">
-												{ex.category}
-											</TableCell>
-											<TableCell>
-												<LevelChip level={ex.level} />
-											</TableCell>
-											<TableCell className="truncate capitalize text-(--sea-ink-soft)">
-												{ex.equipment ?? "—"}
-											</TableCell>
-											<TableCell className="truncate text-(--sea-ink-soft)">
-												{ex.primaryMuscles.join(", ")}
-											</TableCell>
-											<TableCell>
-												<Button
-													size="xs"
-													variant="ghost"
-													onClick={() =>
-														setSelected((prev) =>
-															prev?.id === ex.id ? null : ex,
-														)
-													}
-													className={
-														selected?.id === ex.id
-															? "text-(--lagoon-deep)"
-															: ""
-													}
-												>
-													{selected?.id === ex.id ? "Close" : "View"}
-												</Button>
-											</TableCell>
-										</TableRow>
-									))
-								) : (
-									<TableRow>
-										<TableCell
-											colSpan={6}
-											className="py-12 text-center text-(--sea-ink-soft)"
-										>
-											No exercises match "{query}"
-										</TableCell>
-									</TableRow>
-								)}
-							</TableBody>
-						</Table>
-					</section>
+							))
+						) : (
+							<TableRow>
+								<TableCell
+									colSpan={6}
+									className="py-12 text-center text-(--sea-ink-soft)"
+								>
+									No exercises match "{query}"
+								</TableCell>
+							</TableRow>
+						)}
+					</TableBody>
+				</Table>
+			</section>
 
-					{totalPages > 1 && (
-						<div
-							className="rise-in mt-5 flex items-center justify-between"
-							style={{ animationDelay: "160ms" }}
+			{totalPages > 1 && (
+				<div
+					className="rise-in mt-5 flex items-center justify-between"
+					style={{ animationDelay: "160ms" }}
+				>
+					<p className="text-sm text-(--sea-ink-soft)">
+						Page {page} of {totalPages}
+					</p>
+					<div className="flex gap-2">
+						<Button
+							variant="outline"
+							onClick={() => setPage((p) => p - 1)}
+							disabled={!hasPrev}
 						>
-							<p className="text-sm text-(--sea-ink-soft)">
-								Page {page} of {totalPages}
-							</p>
-							<div className="flex gap-2">
-								<Button
-									variant="outline"
-									onClick={() => setPage((p) => p - 1)}
-									disabled={!hasPrev}
-								>
-									← Previous
-								</Button>
-								<Button
-									variant="outline"
-									onClick={() => setPage((p) => p + 1)}
-									disabled={!hasNext}
-								>
-									Next →
-								</Button>
-							</div>
-						</div>
-					)}
+							← Previous
+						</Button>
+						<Button
+							variant="outline"
+							onClick={() => setPage((p) => p + 1)}
+							disabled={!hasNext}
+						>
+							Next →
+						</Button>
+					</div>
 				</div>
+			)}
 
-				{selected && (
-					<ExercisePanel exercise={selected} onClose={() => setSelected(null)} />
-				)}
-			</div>
+			{selected && (
+				<ExercisePanel exercise={selected} onClose={() => setSelected(null)} />
+			)}
 		</main>
 	);
 }
