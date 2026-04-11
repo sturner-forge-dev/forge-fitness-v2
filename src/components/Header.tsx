@@ -1,9 +1,13 @@
 import { Link } from "@tanstack/react-router";
+import { Logo as ForgeFitnessLogo } from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
 	return (
 		<header className="sticky top-0 z-50 border-b border-(--line) bg-(--header-bg) px-4 backdrop-blur-lg">
+			<div className="absolute left-10 top-1/2 -translate-y-1/2">
+				<ForgeFitnessLogo />
+			</div>
 			<nav className="page-wrap flex flex-wrap items-center gap-x-3 gap-y-2 py-3 sm:py-4">
 				<div className="order-3 flex w-full flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-sm font-semibold sm:order-2 sm:w-auto sm:flex-nowrap sm:pb-0">
 					<Link
@@ -29,7 +33,7 @@ export default function Header() {
 					</Link>
 				</div>
 
-				<div className="order-2 ml-auto flex justify-end sm:order-last">
+				<div className="absolute right-10 top-1/2 -translate-y-1/2">
 					<ThemeToggle />
 				</div>
 			</nav>
