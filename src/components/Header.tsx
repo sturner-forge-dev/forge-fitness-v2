@@ -1,3 +1,4 @@
+import { SignedIn } from '@clerk/clerk-react';
 import { Link } from '@tanstack/react-router';
 import HeaderUser from '../integrations/clerk/header-user';
 import { Logo as ForgeFitnessLogo } from './Logo';
@@ -18,13 +19,15 @@ export default function Header() {
 					>
 						Home
 					</Link>
-					<Link
-						to='/profile'
-						className='nav-link'
-						activeProps={{ className: 'nav-link is-active' }}
-					>
-						Profile
-					</Link>
+					<SignedIn>
+						<Link
+							to='/profile'
+							className='nav-link'
+							activeProps={{ className: 'nav-link is-active' }}
+						>
+							Profile
+						</Link>
+					</SignedIn>
 					<Link
 						to='/about'
 						className='nav-link'
