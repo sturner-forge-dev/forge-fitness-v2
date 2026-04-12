@@ -7,8 +7,17 @@ datasource db {
   provider = "postgresql"
 }
 
-model Todo {
-  id        Int      @id @default(autoincrement())
-  title     String
-  createdAt DateTime @default(now())
+model Exercise {
+  id               Int      @id @default(autoincrement())
+  name             String
+  force            String?
+  level            String
+  mechanic         String?
+  equipment        String?
+  primaryMuscles   String[]
+  secondaryMuscles String[]
+  instructions     String[]
+  category         String
+  images           String[]
+  createdAt        DateTime @default(now())
 }
