@@ -5,7 +5,7 @@ import type { Exercise } from "./types";
 function DetailRow({ label, value }: { label: string; value: string }) {
 	return (
 		<div>
-			<p className="text-xs font-semibold uppercase tracking-wide text-(--sea-ink-soft)">
+			<p className="text-xs font-semibold capitalize tracking-wide text-(--sea-ink-soft)">
 				{label}
 			</p>
 			<p className="mt-0.5 capitalize text-(--sea-ink)">{value}</p>
@@ -54,7 +54,7 @@ export function ExercisePanel({
 
 			{exercise.primaryMuscles.length > 0 && (
 				<div className="mt-4 border-t border-(--line) pt-4">
-					<p className="text-xs font-semibold uppercase tracking-wide text-(--sea-ink-soft)">
+					<p className="text-xs font-semibold capitalize tracking-wide text-(--sea-ink-soft)">
 						Primary Muscles
 					</p>
 					<p className="mt-0.5 capitalize text-(--sea-ink)">
@@ -65,7 +65,7 @@ export function ExercisePanel({
 
 			{exercise.secondaryMuscles.length > 0 && (
 				<div className="mt-4 border-t border-(--line) pt-4">
-					<p className="text-xs font-semibold uppercase tracking-wide text-(--sea-ink-soft)">
+					<p className="text-xs font-semibold capitalize tracking-wide text-(--sea-ink-soft)">
 						Secondary Muscles
 					</p>
 					<p className="mt-0.5 capitalize text-(--sea-ink)">
@@ -76,7 +76,7 @@ export function ExercisePanel({
 
 			{exercise.instructions.length > 0 && (
 				<div className="mt-4 border-t border-(--line) pt-4">
-					<p className="mb-2 text-xs font-semibold uppercase tracking-wide text-(--sea-ink-soft)">
+					<p className="mb-2 text-xs font-semibold capitalize tracking-wide text-(--sea-ink-soft)">
 						Instructions
 					</p>
 					<ol className="space-y-2">
