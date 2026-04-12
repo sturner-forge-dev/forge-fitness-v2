@@ -1,8 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { type Dispatch, type SetStateAction, useMemo } from "react";
 import { Button } from "#/components/ui/button";
-import { LevelChip } from "./LevelChip";
-import type { Exercise } from "./types";
+import { LevelChip } from "../../components/Exercises/LevelChip";
+import type { Exercise } from "../../components/Exercises/types";
 
 export function useExerciseColumns(
 	selected: Exercise | null,
@@ -61,7 +61,7 @@ export function useExerciseColumns(
 				size: 4,
 				cell: ({ row }) => (
 					<Button
-						size="xs"
+						size="sm"
 						variant="ghost"
 						onClick={() =>
 							setSelected((prev) =>

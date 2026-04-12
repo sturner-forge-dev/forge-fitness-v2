@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { getExercises } from "#/components/Exercises/api";
-import { useExerciseColumns } from "#/components/Exercises/columns";
 import { ExercisePanel } from "#/components/Exercises/ExercisePanel";
 import type { Exercise } from "#/components/Exercises/types";
 import PaginatedTable from "#/components/PaginatedTable";
 import { Input } from "#/components/ui/input";
+import { useExerciseColumns } from "#/hooks/Exercises/useExerciseColumns";
 
 export const Route = createFileRoute("/exercises")({
 	loader: () => getExercises(),

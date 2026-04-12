@@ -24,20 +24,10 @@ function HomePage() {
 
 				<div className="flex flex-wrap gap-3">
 					<Button variant="outline" size="lg" asChild>
-						<a
-							href="/workouts/new"
-							// className="rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184, -178,0.14)] px-5 py-2.5 text-sm font-semibold text-(--lagoon-deep) no-underline trans -ition hover:-translate-y-0.5 hover:bg-[rgba(79,184,178,0.24)]"
-						>
-							Log a Workout
-						</a>
+						<a href="/workouts/new">Log a Workout</a>
 					</Button>
 					<Button variant="outline" size="lg" asChild>
-						<a
-							href="/workouts"
-							// className="rounded-full border border-[rgba(23,58,64,0.2)] bg-white/25 px-6 py-3 text-sm font-semibold text-(--sea-ink) no-underline transition hover:-translate-y-0.5 hover:border-[rgba(23,58,64,0.35)]"
-						>
-							View History
-						</a>
+						<a href="/workouts">View History</a>
 					</Button>
 				</div>
 			</section>
