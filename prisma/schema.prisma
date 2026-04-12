@@ -7,6 +7,21 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Future relations (add models when needed):
+  // workouts  Workout[]
+  // routines  Routine[]
+}
+
 model Exercise {
   id               Int      @id @default(autoincrement())
   name             String

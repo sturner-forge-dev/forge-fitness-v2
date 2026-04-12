@@ -59,13 +59,23 @@ function ExercisesPage() {
 					ex.secondaryMuscles.some((m) => m.toLowerCase().includes(q));
 				if (!textMatch) return false;
 			}
-			if (categoryFilter !== ALL && ex.category !== categoryFilter) return false;
+			if (categoryFilter !== ALL && ex.category !== categoryFilter)
+				return false;
 			if (levelFilter !== ALL && ex.level !== levelFilter) return false;
-			if (equipmentFilter !== ALL && ex.equipment !== equipmentFilter) return false;
-			if (muscleFilter !== ALL && !ex.primaryMuscles.includes(muscleFilter)) return false;
+			if (equipmentFilter !== ALL && ex.equipment !== equipmentFilter)
+				return false;
+			if (muscleFilter !== ALL && !ex.primaryMuscles.includes(muscleFilter))
+				return false;
 			return true;
 		});
-	}, [allExercises, query, categoryFilter, levelFilter, equipmentFilter, muscleFilter]);
+	}, [
+		allExercises,
+		query,
+		categoryFilter,
+		levelFilter,
+		equipmentFilter,
+		muscleFilter,
+	]);
 
 	const columns = useExerciseColumns(selected, setSelected);
 
@@ -92,7 +102,10 @@ function ExercisesPage() {
 				</p>
 			</div>
 
-			<div className='rise-in mb-4 space-y-3' style={{ animationDelay: '60ms' }}>
+			<div
+				className='rise-in mb-4 space-y-3'
+				style={{ animationDelay: '20ms' }}
+			>
 				<div className='flex justify-center'>
 					<div className='w-150'>
 						<Input
@@ -112,7 +125,9 @@ function ExercisesPage() {
 						<SelectContent className='capitalize'>
 							<SelectItem value={ALL}>All categories</SelectItem>
 							{filterOptions.categories.map((c) => (
-								<SelectItem key={c} value={c}>{c}</SelectItem>
+								<SelectItem key={c} value={c}>
+									{c}
+								</SelectItem>
 							))}
 						</SelectContent>
 					</Select>
@@ -124,7 +139,9 @@ function ExercisesPage() {
 						<SelectContent className='capitalize'>
 							<SelectItem value={ALL}>All levels</SelectItem>
 							{filterOptions.levels.map((l) => (
-								<SelectItem key={l} value={l}>{l}</SelectItem>
+								<SelectItem key={l} value={l}>
+									{l}
+								</SelectItem>
 							))}
 						</SelectContent>
 					</Select>
@@ -136,7 +153,9 @@ function ExercisesPage() {
 						<SelectContent className='capitalize'>
 							<SelectItem value={ALL}>All equipment</SelectItem>
 							{filterOptions.equipment.map((e) => (
-								<SelectItem key={e} value={e}>{e}</SelectItem>
+								<SelectItem key={e} value={e}>
+									{e}
+								</SelectItem>
 							))}
 						</SelectContent>
 					</Select>
@@ -148,7 +167,9 @@ function ExercisesPage() {
 						<SelectContent className='capitalize'>
 							<SelectItem value={ALL}>All muscles</SelectItem>
 							{filterOptions.muscles.map((m) => (
-								<SelectItem key={m} value={m}>{m}</SelectItem>
+								<SelectItem key={m} value={m}>
+									{m}
+								</SelectItem>
 							))}
 						</SelectContent>
 					</Select>

@@ -500,14 +500,6 @@ export type ExerciseCreateimagesInput = {
   set: string[]
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type ExerciseUpdateprimaryMusclesInput = {
   set?: string[]
   push?: string | string[]
@@ -526,10 +518,6 @@ export type ExerciseUpdateinstructionsInput = {
 export type ExerciseUpdateimagesInput = {
   set?: string[]
   push?: string | string[]
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type IntFieldUpdateOperationsInput = {

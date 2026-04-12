@@ -1,39 +1,41 @@
-import { Link } from "@tanstack/react-router";
-import { Logo as ForgeFitnessLogo } from "./Logo";
-import ThemeToggle from "./ThemeToggle";
+import { Link } from '@tanstack/react-router';
+import HeaderUser from '../integrations/clerk/header-user';
+import { Logo as ForgeFitnessLogo } from './Logo';
+import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
 	return (
-		<header className="sticky top-0 z-50 border-b border-(--line) bg-(--header-bg) px-4 backdrop-blur-lg">
-			<div className="absolute left-10 top-1/2 -translate-y-1/2">
+		<header className='sticky top-0 z-50 border-b border-(--line) bg-(--header-bg) px-4 backdrop-blur-lg'>
+			<div className='absolute left-10 top-1/2 -translate-y-1/2'>
 				<ForgeFitnessLogo />
 			</div>
-			<nav className="page-wrap flex flex-wrap items-center gap-x-3 gap-y-2 py-3 sm:py-4">
-				<div className="order-3 flex w-full flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-sm font-semibold sm:order-2 sm:w-auto sm:flex-nowrap sm:pb-0">
+			<nav className='page-wrap flex flex-wrap items-center gap-x-3 gap-y-2 py-3 sm:py-4'>
+				<div className='order-3 flex w-full flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-sm font-semibold sm:order-2 sm:w-auto sm:flex-nowrap sm:pb-0'>
 					<Link
-						to="/"
-						className="nav-link"
-						activeProps={{ className: "nav-link is-active" }}
+						to='/'
+						className='nav-link'
+						activeProps={{ className: 'nav-link is-active' }}
 					>
 						Home
 					</Link>
 					<Link
-						to="/profile"
-						className="nav-link"
-						activeProps={{ className: "nav-link is-active" }}
+						to='/profile'
+						className='nav-link'
+						activeProps={{ className: 'nav-link is-active' }}
 					>
 						Profile
 					</Link>
 					<Link
-						to="/about"
-						className="nav-link"
-						activeProps={{ className: "nav-link is-active" }}
+						to='/about'
+						className='nav-link'
+						activeProps={{ className: 'nav-link is-active' }}
 					>
 						About
 					</Link>
 				</div>
 
-				<div className="absolute right-10 top-1/2 -translate-y-1/2">
+				<div className='absolute right-10 top-1/2 -translate-y-1/2 flex items-center gap-3'>
+					<HeaderUser />
 					<ThemeToggle />
 				</div>
 			</nav>
