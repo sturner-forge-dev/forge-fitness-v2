@@ -127,3 +127,8 @@ Use `Button` variants: `default`, `outline`, `secondary`, `ghost`, `link`, `dest
 Use `Button` sizes: `default`, `sm`, `lg`, `xs`, `icon`
 
 The `cn()` utility from `#/lib/utils` merges Tailwind classes (clsx + tailwind-merge).
+
+### Plan
+
+The roadmap for this project is located at "./PLAN.md". Any agent should not execute steps in this plan without the user prompting for changes.
+The plan should be used as a reference for feature implementations, but is subject to change.

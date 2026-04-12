@@ -13,3 +13,4 @@ __unconfig*
 todos.json
 mcp-todos.json
 db/dist/*
+PLAN.md
