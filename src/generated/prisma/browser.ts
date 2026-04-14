@@ -27,3 +27,18 @@ export type User = Prisma.UserModel
  * 
  */
 export type Exercise = Prisma.ExerciseModel
+/**
+ * Model WorkoutSession
+ * 
+ */
+export type WorkoutSession = Prisma.WorkoutSessionModel
+/**
+ * Model WorkoutExercise
+ * 
+ */
+export type WorkoutExercise = Prisma.WorkoutExerciseModel
+/**
+ * Model WorkoutSet
+ * 
+ */
+export type WorkoutSet = Prisma.WorkoutSetModel

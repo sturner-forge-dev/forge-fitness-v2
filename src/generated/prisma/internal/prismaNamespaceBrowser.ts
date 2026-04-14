@@ -52,7 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Exercise: 'Exercise'
+  Exercise: 'Exercise',
+  WorkoutSession: 'WorkoutSession',
+  WorkoutExercise: 'WorkoutExercise',
+  WorkoutSet: 'WorkoutSet'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -101,6 +104,46 @@ export const ExerciseScalarFieldEnum = {
 } as const
 
 export type ExerciseScalarFieldEnum = (typeof ExerciseScalarFieldEnum)[keyof typeof ExerciseScalarFieldEnum]
+
+
+export const WorkoutSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  notes: 'notes',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WorkoutSessionScalarFieldEnum = (typeof WorkoutSessionScalarFieldEnum)[keyof typeof WorkoutSessionScalarFieldEnum]
+
+
+export const WorkoutExerciseScalarFieldEnum = {
+  id: 'id',
+  workoutSessionId: 'workoutSessionId',
+  exerciseId: 'exerciseId',
+  order: 'order',
+  notes: 'notes'
+} as const
+
+export type WorkoutExerciseScalarFieldEnum = (typeof WorkoutExerciseScalarFieldEnum)[keyof typeof WorkoutExerciseScalarFieldEnum]
+
+
+export const WorkoutSetScalarFieldEnum = {
+  id: 'id',
+  workoutExerciseId: 'workoutExerciseId',
+  setNumber: 'setNumber',
+  reps: 'reps',
+  weight: 'weight',
+  durationSeconds: 'durationSeconds',
+  isWarmup: 'isWarmup',
+  rpe: 'rpe',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkoutSetScalarFieldEnum = (typeof WorkoutSetScalarFieldEnum)[keyof typeof WorkoutSetScalarFieldEnum]
 
 
 export const SortOrder = {

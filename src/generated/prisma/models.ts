@@ -10,4 +10,7 @@
  */
 export type * from './models/User.ts'
 export type * from './models/Exercise.ts'
+export type * from './models/WorkoutSession.ts'
+export type * from './models/WorkoutExercise.ts'
+export type * from './models/WorkoutSet.ts'
 export type * from './commonInputTypes.ts'

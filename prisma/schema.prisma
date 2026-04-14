@@ -17,9 +17,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Future relations (add models when needed):
-  // workouts  Workout[]
-  // routines  Routine[]
+  workouts WorkoutSession[]
 }
 
 model Exercise {
@@ -35,4 +33,43 @@ model Exercise {
   category         String
   images           String[]
   createdAt        DateTime @default(now())
+
+  workoutExercises WorkoutExercise[]
+}
+
+model WorkoutSession {
+  id          String            @id @default(cuid())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id])
+  name        String?
+  notes       String?
+  startedAt   DateTime          @default(now())
+  completedAt DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  exercises   WorkoutExercise[]
+}
+
+model WorkoutExercise {
+  id               String         @id @default(cuid())
+  workoutSessionId String
+  workoutSession   WorkoutSession @relation(fields: [workoutSessionId], references: [id], onDelete: Cascade)
+  exerciseId       Int
+  exercise         Exercise       @relation(fields: [exerciseId], references: [id])
+  order            Int
+  notes            String?
+  sets             WorkoutSet[]
+}
+
+model WorkoutSet {
+  id                String          @id @default(cuid())
+  workoutExerciseId String
+  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id], onDelete: Cascade)
+  setNumber         Int
+  reps              Int?
+  weight            Float?
+  durationSeconds   Int?
+  isWarmup          Boolean         @default(false)
+  rpe               Int?
+  createdAt         DateTime        @default(now())
 }

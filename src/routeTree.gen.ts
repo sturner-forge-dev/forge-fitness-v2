@@ -14,6 +14,8 @@ import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ExercisesRouteImport } from './routes/exercises'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorkoutsIndexRouteImport } from './routes/workouts.index'
+import { Route as WorkoutsNewRouteImport } from './routes/workouts.new'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoStorybookRouteImport } from './routes/demo/storybook'
 import { Route as DemoStoreRouteImport } from './routes/demo/store'
@@ -51,6 +53,16 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkoutsIndexRoute = WorkoutsIndexRouteImport.update({
+  id: '/workouts/',
+  path: '/workouts/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkoutsNewRoute = WorkoutsNewRouteImport.update({
+  id: '/workouts/new',
+  path: '/workouts/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -134,6 +146,8 @@ export interface FileRoutesByFullPath {
   '/demo/store': typeof DemoStoreRoute
   '/demo/storybook': typeof DemoStorybookRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/workouts/new': typeof WorkoutsNewRoute
+  '/workouts/': typeof WorkoutsIndexRoute
   '/demo/api/mcp-todos': typeof DemoApiMcpTodosRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
@@ -154,6 +168,8 @@ export interface FileRoutesByTo {
   '/demo/store': typeof DemoStoreRoute
   '/demo/storybook': typeof DemoStorybookRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/workouts/new': typeof WorkoutsNewRoute
+  '/workouts': typeof WorkoutsIndexRoute
   '/demo/api/mcp-todos': typeof DemoApiMcpTodosRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
@@ -175,6 +191,8 @@ export interface FileRoutesById {
   '/demo/store': typeof DemoStoreRoute
   '/demo/storybook': typeof DemoStorybookRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/workouts/new': typeof WorkoutsNewRoute
+  '/workouts/': typeof WorkoutsIndexRoute
   '/demo/api/mcp-todos': typeof DemoApiMcpTodosRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
@@ -197,6 +215,8 @@ export interface FileRouteTypes {
     | '/demo/store'
     | '/demo/storybook'
     | '/demo/tanstack-query'
+    | '/workouts/new'
+    | '/workouts/'
     | '/demo/api/mcp-todos'
     | '/demo/form/address'
     | '/demo/form/simple'
@@ -217,6 +237,8 @@ export interface FileRouteTypes {
     | '/demo/store'
     | '/demo/storybook'
     | '/demo/tanstack-query'
+    | '/workouts/new'
+    | '/workouts'
     | '/demo/api/mcp-todos'
     | '/demo/form/address'
     | '/demo/form/simple'
@@ -237,6 +259,8 @@ export interface FileRouteTypes {
     | '/demo/store'
     | '/demo/storybook'
     | '/demo/tanstack-query'
+    | '/workouts/new'
+    | '/workouts/'
     | '/demo/api/mcp-todos'
     | '/demo/form/address'
     | '/demo/form/simple'
@@ -258,6 +282,8 @@ export interface RootRouteChildren {
   DemoStoreRoute: typeof DemoStoreRoute
   DemoStorybookRoute: typeof DemoStorybookRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  WorkoutsNewRoute: typeof WorkoutsNewRoute
+  WorkoutsIndexRoute: typeof WorkoutsIndexRoute
   DemoApiMcpTodosRoute: typeof DemoApiMcpTodosRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
   DemoFormSimpleRoute: typeof DemoFormSimpleRoute
@@ -299,6 +325,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workouts/': {
+      id: '/workouts/'
+      path: '/workouts'
+      fullPath: '/workouts/'
+      preLoaderRoute: typeof WorkoutsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workouts/new': {
+      id: '/workouts/new'
+      path: '/workouts/new'
+      fullPath: '/workouts/new'
+      preLoaderRoute: typeof WorkoutsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -410,6 +450,8 @@ const rootRouteChildren: RootRouteChildren = {
   DemoStoreRoute: DemoStoreRoute,
   DemoStorybookRoute: DemoStorybookRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  WorkoutsNewRoute: WorkoutsNewRoute,
+  WorkoutsIndexRoute: WorkoutsIndexRoute,
   DemoApiMcpTodosRoute: DemoApiMcpTodosRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
   DemoFormSimpleRoute: DemoFormSimpleRoute,
