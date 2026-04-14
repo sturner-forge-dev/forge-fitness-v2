@@ -9,6 +9,7 @@ dist-ssr
 .wrangler
 .output
 .vinxi
+.markdownlint.json
 __unconfig*
 todos.json
 mcp-todos.json
