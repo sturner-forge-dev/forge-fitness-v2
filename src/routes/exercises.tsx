@@ -1,21 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { getExercises } from '#/components/Exercises/api';
+import { ExercisesPageSkeleton } from '#/components/Exercises/ExercisePageSkeleton';
 import { ExercisePanel } from '#/components/Exercises/ExercisePanel';
 import type { Exercise } from '#/components/Exercises/types';
 import PaginatedTable from '#/components/PaginatedTable';
 import { Input } from '#/components/ui/input';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '#/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '#/components/ui/select';
 import { useExerciseColumns } from '#/hooks/Exercises/useExerciseColumns';
 
 export const Route = createFileRoute('/exercises')({
-	loader: () => getExercises(),
+	loader: async () => getExercises(),
+	pendingComponent: ExercisesPageSkeleton,
+	pendingMs: 0,
 	component: ExercisesPage,
 });
 
@@ -31,8 +28,7 @@ function ExercisesPage() {
 	const [muscleFilter, setMuscleFilter] = useState(ALL);
 
 	const filterOptions = useMemo(() => {
-		const sorted = (vals: (string | null | undefined)[]) =>
-			[...new Set(vals.filter(Boolean))].sort() as string[];
+		const sorted = (vals: (string | null | undefined)[]) => [...new Set(vals.filter(Boolean))].sort() as string[];
 		return {
 			categories: sorted(allExercises.map((ex) => ex.category)),
 			levels: sorted(allExercises.map((ex) => ex.level)),
@@ -42,10 +38,7 @@ function ExercisesPage() {
 	}, [allExercises]);
 
 	const hasActiveFilters =
-		categoryFilter !== ALL ||
-		levelFilter !== ALL ||
-		equipmentFilter !== ALL ||
-		muscleFilter !== ALL;
+		categoryFilter !== ALL || levelFilter !== ALL || equipmentFilter !== ALL || muscleFilter !== ALL;
 
 	const filtered = useMemo(() => {
 		const q = query.trim().toLowerCase();
@@ -59,23 +52,13 @@ function ExercisesPage() {
 					ex.secondaryMuscles.some((m) => m.toLowerCase().includes(q));
 				if (!textMatch) return false;
 			}
-			if (categoryFilter !== ALL && ex.category !== categoryFilter)
-				return false;
+			if (categoryFilter !== ALL && ex.category !== categoryFilter) return false;
 			if (levelFilter !== ALL && ex.level !== levelFilter) return false;
-			if (equipmentFilter !== ALL && ex.equipment !== equipmentFilter)
-				return false;
-			if (muscleFilter !== ALL && !ex.primaryMuscles.includes(muscleFilter))
-				return false;
+			if (equipmentFilter !== ALL && ex.equipment !== equipmentFilter) return false;
+			if (muscleFilter !== ALL && !ex.primaryMuscles.includes(muscleFilter)) return false;
 			return true;
 		});
-	}, [
-		allExercises,
-		query,
-		categoryFilter,
-		levelFilter,
-		equipmentFilter,
-		muscleFilter,
-	]);
+	}, [allExercises, query, categoryFilter, levelFilter, equipmentFilter, muscleFilter]);
 
 	const columns = useExerciseColumns(selected, setSelected);
 
@@ -102,10 +85,7 @@ function ExercisesPage() {
 				</p>
 			</div>
 
-			<div
-				className='rise-in mb-4 space-y-3'
-				style={{ animationDelay: '20ms' }}
-			>
+			<div className='rise-in mb-4 space-y-3' style={{ animationDelay: '20ms' }}>
 				<div className='flex justify-center'>
 					<div className='w-150'>
 						<Input
@@ -186,16 +166,11 @@ function ExercisesPage() {
 				</div>
 			</div>
 
-			<section
-				className='island-shell rise-in overflow-hidden rounded-2xl p-3'
-				style={{ animationDelay: '80ms' }}
-			>
+			<section className='island-shell rise-in overflow-hidden rounded-2xl p-3' style={{ animationDelay: '80ms' }}>
 				<PaginatedTable columns={columns} data={filtered} />
 			</section>
 
-			{selected && (
-				<ExercisePanel exercise={selected} onClose={() => setSelected(null)} />
-			)}
+			{selected && <ExercisePanel exercise={selected} onClose={() => setSelected(null)} />}
 		</main>
 	);
 }

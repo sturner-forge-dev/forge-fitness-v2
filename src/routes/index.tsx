@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
-import { createFileRoute } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import { Button } from '#/components/ui/button';
 
 export const Route = createFileRoute('/')({ component: HomePage });
@@ -26,10 +26,10 @@ function HomePage() {
 				<SignedIn>
 					<div className='flex flex-wrap gap-3'>
 						<Button variant='outline' size='lg' asChild>
-							<a href='/workouts/new'>Log a Workout</a>
+							<Link to='/workouts/new'>Log a Workout</Link>
 						</Button>
 						<Button variant='outline' size='lg' asChild>
-							<a href='/workouts'>View History</a>
+							<Link to='/workouts'>View History</Link>
 						</Button>
 					</div>
 				</SignedIn>
@@ -81,9 +81,9 @@ function HomePage() {
 						href: '/programs',
 					},
 				].map(({ icon, title, desc, href }, i) => (
-					<a
+					<Link
 						key={title}
-						href={href}
+						to={href}
 						className='island-shell feature-card rise-in block rounded-2xl p-6 no-underline'
 						style={{ animationDelay: `${i * 80 + 300}ms` }}
 					>
@@ -96,7 +96,7 @@ function HomePage() {
 						<p className='m-0 text-sm leading-relaxed text-(--sea-ink-soft)'>
 							{desc}
 						</p>
-					</a>
+					</Link>
 				))}
 			</section>
 
@@ -113,21 +113,21 @@ function HomePage() {
 						</h2>
 					</div>
 					<SignedIn>
-						<a
-							href='/workouts'
+						<Link
+							to='/workouts'
 							className='rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.1)] px-4 py-2 text-xs font-semibold text-(--lagoon-deep) no-underline transition hover:bg-[rgba(79,184,178,0.2)]'
 						>
 							View all
-						</a>
+						</Link>
 					</SignedIn>
 				</div>
 				<div className='mt-5 rounded-xl border border-dashed border-(--line) px-6 py-10 text-center'>
 					<SignedIn>
 						<p className='m-0 text-sm text-(--sea-ink-soft)'>
 							No workouts logged yet.{' '}
-							<a href='/workouts/new' className='font-semibold'>
+							<Link to='/workouts/new' className='font-semibold'>
 								Start your first session →
-							</a>
+							</Link>
 						</p>
 					</SignedIn>
 					<SignedOut>
