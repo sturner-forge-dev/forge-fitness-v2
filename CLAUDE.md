@@ -128,6 +128,65 @@ Use `Button` sizes: `default`, `sm`, `lg`, `xs`, `icon`
 
 The `cn()` utility from `#/lib/utils` merges Tailwind classes (clsx + tailwind-merge).
 
+### Forms
+
+All forms use **TanStack Form v1**. Never manage form state with `useState`.
+
+Each form domain gets its own hook file using `createFormHookContexts` + `createFormHook`:
+
+```ts
+// e.g. src/components/Workouts/workout-form.ts
+import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
+
+const { fieldContext, formContext } = createFormHookContexts();
+
+export const { useAppForm, withForm } = createFormHook({
+  fieldContext,
+  formContext,
+  fieldComponents: {},
+  formComponents: {},
+});
+```
+
+**In the top-level form component** — use `useAppForm`, wrap the return in `<form.AppForm>`:
+
+```tsx
+const form = useAppForm({
+  defaultValues: { ... } satisfies MyFormData,
+  onSubmit: async ({ value }) => { ... },
+});
+
+return (
+  <form.AppForm>
+    {/* children */}
+    <form.Subscribe selector={(s) => s.isSubmitting}>
+      {(isSubmitting) => <Button disabled={isSubmitting}>Submit</Button>}
+    </form.Subscribe>
+  </form.AppForm>
+);
+```
+
+**In child components** — use `withForm` so the `form` prop is properly typed, and `useField` for individual field access:
+
+```tsx
+export const MyFieldGroup = withForm({
+  defaultValues: { ... } satisfies MyFormData, // used for type inference only
+  props: { someExtra: '' as string },
+  render: ({ form, someExtra }) => {
+    const nameField = useField({ form, name: 'fieldName' });
+    return <Input value={nameField.state.value} onChange={(e) => nameField.handleChange(e.target.value)} />;
+  },
+});
+```
+
+Key rules:
+
+- Use `useField` (hook) for reading/writing individual fields — flat, no render-prop nesting.
+- Use `form.Field` with `mode="array"` only when you need array mutation methods (`pushValue`, `removeValue`). Prefer `useField` with `mode: 'array'` instead.
+- Template literals with `number` indices (`` `items[${i}].name` ``) satisfy `DeepKeys<T>` — no `as any` casts needed.
+- `form.Subscribe` for reactive reads that drive JSX outside a field (e.g. submit button disabled state).
+- Never default to suppressing Biome errors with `biome-ignore` — address the underlying issue instead. If there is a solid reason for suppressing an error, explain the reasoning.
+
 ### Plan
 
 The roadmap for this project is located at "./PLAN.md". Any agent should not execute steps in this plan without the user prompting for changes.

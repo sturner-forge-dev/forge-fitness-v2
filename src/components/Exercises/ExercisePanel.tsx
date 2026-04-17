@@ -1,17 +1,14 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '#/components/ui/sheet';
+import { ExerciseDetailRow } from './ExerciseDetailRow';
 import { LevelChip } from './LevelChip';
 import type { Exercise } from './types';
 
-function DetailRow({ label, value }: { label: string; value: string }) {
-	return (
-		<div>
-			<p className='text-xs font-semibold capitalize tracking-wide text-(--sea-ink-soft)'>{label}</p>
-			<p className='mt-0.5 capitalize text-(--sea-ink)'>{value}</p>
-		</div>
-	);
+interface ExercisePanelProps {
+	exercise: Exercise;
+	onClose: () => void;
 }
 
-export function ExercisePanel({ exercise, onClose }: { exercise: Exercise; onClose: () => void }) {
+export function ExercisePanel({ exercise, onClose }: ExercisePanelProps) {
 	return (
 		<Sheet open onOpenChange={(open) => !open && onClose()}>
 			<SheetContent side='right' className='island-shell min-w-sm rounded-none border-l border-(--line) p-5'>
@@ -24,10 +21,10 @@ export function ExercisePanel({ exercise, onClose }: { exercise: Exercise; onClo
 				<LevelChip level={exercise.level} />
 
 				<div className='grid grid-cols-2 gap-4 border-t border-(--line) pt-4'>
-					<DetailRow label='Category' value={exercise.category} />
-					{exercise.equipment && <DetailRow label='Equipment' value={exercise.equipment} />}
-					{exercise.force && <DetailRow label='Force' value={exercise.force} />}
-					{exercise.mechanic && <DetailRow label='Mechanic' value={exercise.mechanic} />}
+					<ExerciseDetailRow label='Category' value={exercise.category} />
+					{exercise.equipment && <ExerciseDetailRow label='Equipment' value={exercise.equipment} />}
+					{exercise.force && <ExerciseDetailRow label='Force' value={exercise.force} />}
+					{exercise.mechanic && <ExerciseDetailRow label='Mechanic' value={exercise.mechanic} />}
 				</div>
 
 				{exercise.primaryMuscles.length > 0 && (

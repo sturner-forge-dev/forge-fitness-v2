@@ -41,6 +41,7 @@ function WorkoutsPage() {
 			{loading ? (
 				<div className='island-shell rise-in space-y-3 rounded-2xl p-5'>
 					{[...Array(3)].map((_, i) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: static ordered list
 						<div key={i} className='h-16 animate-pulse rounded-xl bg-(--surface-strong)' />
 					))}
 				</div>

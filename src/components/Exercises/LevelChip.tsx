@@ -1,4 +1,8 @@
-export function LevelChip({ level }: { level: string }) {
+interface LevelChipProps {
+	level: string;
+}
+
+export function LevelChip({ level }: LevelChipProps) {
 	return (
 		<span
 			className={`inline-block w-24 rounded-full px-2.5 py-0.5 text-center text-xs font-semibold ${

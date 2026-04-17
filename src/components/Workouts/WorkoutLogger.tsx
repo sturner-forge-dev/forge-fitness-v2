@@ -7,10 +7,11 @@ import { Button } from '#/components/ui/button';
 import { Input } from '#/components/ui/input';
 import { createWorkoutSession } from './api';
 import { ExercisePicker } from './ExercisePicker';
-import type { WorkoutDraft, WorkoutExercise, WorkoutSet } from './types';
+import type { WorkoutExercise } from './types';
 import { makeEmptySet, makeId } from './utils';
 import { WorkoutExerciseCard } from './WorkoutExerciseCard';
 import { WorkoutSummaryBar } from './WorkoutSummaryBar';
+import { useAppForm } from './workout-form';
 
 interface WorkoutLoggerProps {
 	exercises: Exercise[];
@@ -21,85 +22,23 @@ export function WorkoutLogger({ exercises }: WorkoutLoggerProps) {
 	const { user } = useUser();
 	const [startedAt] = useState(() => new Date());
 	const [pickerOpen, setPickerOpen] = useState(false);
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [workout, setWorkout] = useState<WorkoutDraft>({
-		name: '',
-		notes: '',
-		exercises: [],
-	});
 
-	function addExercise(exercise: Exercise) {
-		setWorkout((prev) => ({
-			...prev,
-			exercises: [
-				...prev.exercises,
-				{
-					id: makeId(),
-					exerciseId: exercise.id,
-					exerciseName: exercise.name,
-					order: prev.exercises.length,
-					sets: [makeEmptySet(1)],
-				},
-			],
-		}));
-	}
-
-	function removeExercise(exerciseId: string) {
-		setWorkout((prev) => ({
-			...prev,
-			exercises: prev.exercises.filter((ex) => ex.id !== exerciseId).map((ex, i) => ({ ...ex, order: i })),
-		}));
-	}
-
-	function addSet(exerciseId: string) {
-		setWorkout((prev) => ({
-			...prev,
-			exercises: prev.exercises.map((ex) => {
-				if (ex.id !== exerciseId) return ex;
-				return {
-					...ex,
-					sets: [...ex.sets, makeEmptySet(ex.sets.length + 1)],
-				};
-			}),
-		}));
-	}
-
-	function updateSet(exerciseId: string, setId: string, updates: Partial<WorkoutSet>) {
-		setWorkout((prev) => ({
-			...prev,
-			exercises: prev.exercises.map((ex) => {
-				if (ex.id !== exerciseId) return ex;
-				return {
-					...ex,
-					sets: ex.sets.map((s) => (s.id === setId ? { ...s, ...updates } : s)),
-				};
-			}),
-		}));
-	}
-
-	function deleteSet(exerciseId: string, setId: string) {
-		setWorkout((prev) => ({
-			...prev,
-			exercises: prev.exercises.map((ex) => {
-				if (ex.id !== exerciseId) return ex;
-				const remaining = ex.sets.filter((s) => s.id !== setId).map((s, i) => ({ ...s, setNumber: i + 1 }));
-				return { ...ex, sets: remaining };
-			}),
-		}));
-	}
-
-	async function finishWorkout() {
-		if (workout.exercises.length === 0 || !user) return;
-		setIsSubmitting(true);
-		try {
+	const form = useAppForm({
+		defaultValues: {
+			name: '',
+			notes: '',
+			exercises: [] as WorkoutExercise[],
+		},
+		onSubmit: async ({ value }) => {
+			if (value.exercises.length === 0 || !user) return;
 			await createWorkoutSession({
 				data: {
 					clerkId: user.id,
-					name: workout.name || undefined,
-					notes: workout.notes || undefined,
+					name: value.name || undefined,
+					notes: value.notes || undefined,
 					startedAt: startedAt.toISOString(),
 					completedAt: new Date().toISOString(),
-					exercises: workout.exercises.map((ex) => ({
+					exercises: value.exercises.map((ex) => ({
 						exerciseId: ex.exerciseId,
 						order: ex.order,
 						notes: ex.notes,
@@ -115,46 +54,64 @@ export function WorkoutLogger({ exercises }: WorkoutLoggerProps) {
 				},
 			});
 			navigate({ to: '/workouts' });
-		} catch (err) {
-			console.error('Failed to save workout:', err);
-			setIsSubmitting(false);
-		}
+		},
+	});
+
+	function addExercise(exercise: Exercise) {
+		form.setFieldValue('exercises', (prev) => [
+			...prev,
+			{
+				id: makeId(),
+				exerciseId: exercise.id,
+				exerciseName: exercise.name,
+				order: prev.length,
+				sets: [makeEmptySet(1)],
+			} satisfies WorkoutExercise,
+		]);
 	}
 
 	return (
-		<>
+		<form.AppForm>
 			<div className='space-y-4 pb-24'>
 				{/* Workout name */}
 				<div className='island-shell rounded-2xl p-4'>
-					<Input
-						type='text'
-						value={workout.name}
-						onChange={(e) => setWorkout((prev) => ({ ...prev, name: e.target.value }))}
-						placeholder='Workout name (optional)'
-						className='border-none bg-transparent p-0 text-base font-semibold text-(--sea-ink) shadow-none focus-visible:ring-0'
-					/>
+					<form.Field name='name'>
+						{(field) => (
+							<Input
+								type='text'
+								value={field.state.value}
+								onChange={(e) => field.handleChange(e.target.value)}
+								onBlur={field.handleBlur}
+								placeholder='Workout name (optional)'
+								className='border-none bg-transparent p-0 text-base font-semibold text-(--sea-ink) shadow-none focus-visible:ring-0'
+							/>
+						)}
+					</form.Field>
 				</div>
 
 				{/* Exercise cards */}
-				{workout.exercises.map((ex: WorkoutExercise) => (
-					<WorkoutExerciseCard
-						key={ex.id}
-						exercise={ex}
-						onUpdateSet={(setId, updates) => updateSet(ex.id, setId, updates)}
-						onDeleteSet={(setId) => deleteSet(ex.id, setId)}
-						onAddSet={() => addSet(ex.id)}
-						onDelete={() => removeExercise(ex.id)}
-					/>
-				))}
+				<form.Field name='exercises' mode='array'>
+					{(exercisesField) => (
+						<>
+							{exercisesField.state.value.map((ex, exIdx) => (
+								<WorkoutExerciseCard
+									key={ex.id}
+									form={form}
+									exerciseIndex={exIdx}
+									onDelete={() => exercisesField.removeValue(exIdx)}
+								/>
+							))}
 
-				{/* Empty state */}
-				{workout.exercises.length === 0 && (
-					<div className='island-shell rounded-2xl px-6 py-12 text-center'>
-						<Dumbbell className='mx-auto mb-3 h-8 w-8 text-(--sea-ink-soft)' />
-						<p className='text-sm font-medium text-(--sea-ink)'>No exercises yet</p>
-						<p className='mt-1 text-xs text-(--sea-ink-soft)'>Add your first exercise to get started</p>
-					</div>
-				)}
+							{exercisesField.state.value.length === 0 && (
+								<div className='island-shell rounded-2xl px-6 py-12 text-center'>
+									<Dumbbell className='mx-auto mb-3 h-8 w-8 text-(--sea-ink-soft)' />
+									<p className='text-sm font-medium text-(--sea-ink)'>No exercises yet</p>
+									<p className='mt-1 text-xs text-(--sea-ink-soft)'>Add your first exercise to get started</p>
+								</div>
+							)}
+						</>
+					)}
+				</form.Field>
 
 				{/* Add exercise button */}
 				<Button type='button' variant='outline' className='w-full border-dashed' onClick={() => setPickerOpen(true)}>
@@ -165,7 +122,16 @@ export function WorkoutLogger({ exercises }: WorkoutLoggerProps) {
 
 			<ExercisePicker open={pickerOpen} onOpenChange={setPickerOpen} exercises={exercises} onSelect={addExercise} />
 
-			<WorkoutSummaryBar workout={workout} startedAt={startedAt} onFinish={finishWorkout} isSubmitting={isSubmitting} />
-		</>
+			<form.Subscribe selector={(state) => ({ values: state.values, isSubmitting: state.isSubmitting })}>
+				{({ values, isSubmitting }) => (
+					<WorkoutSummaryBar
+						workout={values}
+						startedAt={startedAt}
+						onFinish={() => form.handleSubmit()}
+						isSubmitting={isSubmitting}
+					/>
+				)}
+			</form.Subscribe>
+		</form.AppForm>
 	);
 }
