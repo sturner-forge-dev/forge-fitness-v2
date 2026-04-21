@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Tech Stack
+
+This is a TypeScript project using TanStack Router, TanStack Form (prefer `useField` hook over render props), Prisma, and Tailwind CSS. Avoid `as any` casts and Biome suppressions — find the proper typed approach.
+
+## Rules
+
+- Do NOT start the dev server or run long-running processes unless explicitly asked. Ask before running any server commands.
+- When unsure about the codebase architecture, ASK the user instead of autonomously exploring. Minimize token usage on exploration.
+
 ## Commands
 
 ```bash
@@ -36,6 +45,8 @@ Components land in `src/components/ui/`.
 ### Routing
 
 File-based via TanStack Router. Files in `src/routes/` become routes automatically — `__root.tsx` is the shell layout (Header, Footer, Clerk provider, devtools). The route tree is auto-generated into `src/routeTree.gen.ts`; never edit this file directly.
+
+Use TanStack Router `<Link>` components instead of plain `<a>` tags for all internal navigation.
 
 Route definition pattern:
 
@@ -82,7 +93,9 @@ The seed file (`prisma/seed.ts`) loads `db/dist/exercises.nd.json` — a newline
 
 ### Styling
 
-All styles flow through `src/styles.css` (Tailwind v4 via vite plugin). Design tokens are CSS custom properties defined in `:root` and overridden in `.dark`:
+All styles flow through `src/styles.css` (Tailwind v4 via vite plugin). Design tokens are CSS custom properties defined in `:root` and overridden in `.dark`.
+
+When modifying CSS or Tailwind classes, check for specificity conflicts in global stylesheets before assuming the fix is complete. Be aware that tailwind-merge may strip classes that conflict with base component styles.
 
 | Token                           | Usage                  |
 | ------------------------------- | ---------------------- |
@@ -117,6 +130,10 @@ import { Button } from "#/components/ui/button";
 ```
 
 shadcn components use `#/` — prefer that for consistency.
+
+## UI / Components
+
+Always use shadcn/ui components when building UI. Do not use raw HTML elements or custom implementations when a shadcn component exists.
 
 ### UI Components
 
