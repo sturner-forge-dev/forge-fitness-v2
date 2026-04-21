@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
-import { Link, createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { Button } from '#/components/ui/button';
 
 export const Route = createFileRoute('/')({ component: HomePage });
@@ -19,8 +19,8 @@ function HomePage() {
 					<span className='text-(--lagoon-deep)'>best self.</span>
 				</h1>
 				<p className='mb-8 max-w-xl text-base text-(--sea-ink-soft) sm:text-lg'>
-					Log workouts, track PRs, and watch your strength grow over time. Built
-					for athletes who take their training seriously.
+					Log workouts, track PRs, and watch your strength grow over time. Built for athletes who take their training
+					seriously.
 				</p>
 
 				<SignedIn>
@@ -50,9 +50,7 @@ function HomePage() {
 							style={{ animationDelay: `${i * 60 + 120}ms` }}
 						>
 							<p className='island-kicker mb-1'>{label}</p>
-							<p className='my-1 text-3xl font-bold text-(--sea-ink)'>
-								{value}
-							</p>
+							<p className='my-1 text-3xl font-bold text-(--sea-ink)'>{value}</p>
 							<p className='m-0 text-xs text-(--sea-ink-soft)'>{unit}</p>
 						</article>
 					))}
@@ -90,27 +88,19 @@ function HomePage() {
 						<span className='mb-4 block text-3xl' aria-hidden='true'>
 							{icon}
 						</span>
-						<h2 className='mb-2 text-base font-semibold text-(--sea-ink)'>
-							{title}
-						</h2>
-						<p className='m-0 text-sm leading-relaxed text-(--sea-ink-soft)'>
-							{desc}
-						</p>
+						<h2 className='mb-2 text-base font-semibold text-(--sea-ink)'>{title}</h2>
+
+						<p className='m-0 text-sm leading-relaxed text-(--sea-ink-soft)'>{desc}</p>
 					</Link>
 				))}
 			</section>
 
 			{/* Recent Activity placeholder */}
-			<section
-				className='island-shell rise-in mt-6 rounded-2xl p-6'
-				style={{ animationDelay: '480ms' }}
-			>
+			<section className='island-shell rise-in mt-6 rounded-2xl p-6' style={{ animationDelay: '480ms' }}>
 				<div className='flex items-center justify-between'>
 					<div>
 						<p className='island-kicker mb-1'>Recent Activity</p>
-						<h2 className='m-0 text-base font-semibold text-(--sea-ink)'>
-							Your last workouts
-						</h2>
+						<h2 className='m-0 text-base font-semibold text-(--sea-ink)'>Your last workouts</h2>
 					</div>
 					<SignedIn>
 						<Link
@@ -131,9 +121,7 @@ function HomePage() {
 						</p>
 					</SignedIn>
 					<SignedOut>
-						<p className='m-0 text-sm text-(--sea-ink-soft)'>
-							Sign in to start tracking workouts.
-						</p>
+						<p className='m-0 text-sm text-(--sea-ink-soft)'>Sign in to start tracking workouts.</p>
 					</SignedOut>
 				</div>
 			</section>
