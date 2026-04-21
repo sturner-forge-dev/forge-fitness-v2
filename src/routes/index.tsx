@@ -89,7 +89,6 @@ function HomePage() {
 							{icon}
 						</span>
 						<h2 className='mb-2 text-base font-semibold text-(--sea-ink)'>{title}</h2>
-
 						<p className='m-0 text-sm leading-relaxed text-(--sea-ink-soft)'>{desc}</p>
 					</Link>
 				))}
